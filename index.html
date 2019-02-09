@@ -1,0 +1,40 @@
+<style>
+  body {
+    margin: 0;
+  }
+</style>
+
+<head>
+
+</head>
+
+<body style="margin:0;position:absolute;width:100%; height:100%">
+  <div style="width:100%;height:100%;" id="overlay"></div>
+  <iframe id="iframe_target" style="width:100%;height:100%;" frameBorder="0" allow="autoplay">
+  </iframe>
+</body>
+
+<script>
+  let url_string = window.location.search.substring(1);
+  let vars = url_string.split('&');
+  let path = '';
+
+  for (let i = 0; i < vars.length; i ++) {
+    let args = vars[i].split('=');
+    if (args[0]==='url') {
+      path = args[1];
+    }
+  }
+    let overlay = document.getElementById('overlay');
+  if (path) {
+    overlay.innerHTML = "Click to load: " + path;
+  }
+
+  function onPointerDown(evt) {
+    window.removeEventListener('pointerdown', onPointerDown);
+    overlay.parentElement.removeChild(overlay);
+    let frame = document.getElementById('iframe_target');
+    frame.src = path;
+  }
+  window.addEventListener('pointerdown',  onPointerDown);
+</script>
